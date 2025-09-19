@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const articleSchema = new Schema({
+const tagSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -29,4 +29,4 @@ const articleSchema = new Schema({
   },
 });
 
-export const ArticleModel = model("Article", articleSchema);
+export const TagModel = model("Tag", tagSchema);
