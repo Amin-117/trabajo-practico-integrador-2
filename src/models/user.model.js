@@ -9,6 +9,7 @@ const userSchema = new Schema({
     minlength: 3,
     maxlength: 20,
     trim: true,
+    match: /^[a-zA-Z0-9]+$/,
   },
   email: {
     type: String,
@@ -16,11 +17,13 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
+    match: /.+\@.+\..+/,
   },
   password: {
     type: String,
     required: true,
     minlength: 6,
+    select: false,
   },
   role: {
     type: String,
