@@ -29,7 +29,6 @@ export const registerUser = async (req, res) => {
 
     res.status(201).json({ message: "User Registrado Correctamente" });
   } catch (error) {
-    console.log(error);
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -38,13 +37,16 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const userLog = await UserModel.findOne({ email });
+    const userLog = await UserModel.findOne({ email }).select("+password");
 
     if (!userLog) {
       return res.status(404).json("Usuario no encontrado");
     }
 
-    const contraseñaCorrecta = await comparePassword(password, user.password);
+    const contraseñaCorrecta = await comparePassword(
+      password,
+      userLog.password
+    );
     if (!contraseñaCorrecta) {
       return res.status(401).json({ message: "Contraseña incorrecta" });
     }
@@ -53,6 +55,7 @@ export const loginUser = async (req, res) => {
 
     res.status(201).json({ message: "Logueado Correctamente" });
   } catch (error) {
+    console.log(error);
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Internal server error" });
   }

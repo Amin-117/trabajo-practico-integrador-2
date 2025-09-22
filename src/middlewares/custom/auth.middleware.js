@@ -1,5 +1,6 @@
 import { verifyToken } from "../../helpers/JWT.helper.js";
 import { UserModel } from "../../models/user.model.js";
+import { body } from "express-validator";
 
 export const authMiddleware = async (req, res, next) => {
   try {
@@ -35,3 +36,8 @@ export const authMiddleware = async (req, res, next) => {
       .json({ message: "Error interno en la autenticación" });
   }
 };
+
+export const loginValidation = [
+  body("email").isEmail().withMessage("El email no es válido"),
+  body("password").notEmpty().withMessage("La contraseña es obligatoria"),
+];
