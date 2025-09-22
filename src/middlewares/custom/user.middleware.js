@@ -1,5 +1,5 @@
 import { body, param } from "express-validator";
-import { validateUserId, validateEmailUnique } from "./custom.user";
+import { checkUserExist, validateEmailUnique } from "./custom.user.js";
 
 export const validateUserCreation = [
   body("username")
@@ -9,7 +9,7 @@ export const validateUserCreation = [
     .withMessage("El nombre de usuario es obligatorio")
     .isLength({ min: 3, max: 30 })
     .withMessage("El nombre de usuario debe tener entre 3 y 30 caracteres")
-    .custom(validateUserId)
+    .custom(checkUserExist)
     .trim()
     .escape(),
   body("email")
@@ -65,7 +65,7 @@ export const validateUserUpdate = [
     .withMessage("El nombre de usuario debe ser una cadena de texto")
     .isLength({ min: 3, max: 30 })
     .withMessage("El nombre de usuario debe tener entre 3 y 30 caracteres")
-    .custom(validateUserId)
+    .custom(checkUserExist)
     .trim()
     .escape(),
   body("email")

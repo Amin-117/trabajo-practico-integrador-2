@@ -1,7 +1,5 @@
-import { UserModel } from "../../models/user.model";
-
 // Valida si un ID de usuario existe en la DB
-export const validateUserId = async (id) => {
+export const checkUserExist = async (id) => {
   const user = await UserModel.findById(id);
   if (!user) throw new Error("Usuario no encontrado");
   return true;
