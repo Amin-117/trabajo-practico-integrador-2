@@ -80,3 +80,39 @@ export const getUserProfile = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const { first_name, last_name, biography, avatar_url, birth_date } =
+      req.body.profile;
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          "profile.first_name": first_name,
+          "profile.last_name": last_name,
+          "profile.biography": biography,
+          "profile.avatar_url": avatar_url,
+          "profile.birth_date": birth_date,
+        },
+      },
+      { new: true, runValidators: true, select: "-password" }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).json({
+      message: "Perfil actualizado correctamente",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    console.error("Error al actualizar perfil:", error);
+    res.status(500).json({ message: "Error interno al actualizar perfil" });
+  }
+};

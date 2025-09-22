@@ -3,6 +3,7 @@ import {
   registerUser,
   loginUser,
   getUserProfile,
+  updateUserProfile,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
 import { validateResult } from "../middlewares/validationResult.middleware.js";
@@ -24,5 +25,10 @@ authRouter.post(
   validateResult,
   getUserProfile
 );
-//authRouter.post("/authprofile", updateUserProfile);
+authRouter.put(
+  "/auth/profile",
+  authMiddleware,
+  validateResult,
+  updateUserProfile
+);
 //authRouter.post("/auth/logout", logoutUser);
