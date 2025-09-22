@@ -4,6 +4,7 @@ import {
   loginUser,
   getUserProfile,
   updateUserProfile,
+  logoutUser,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
 import { validateResult } from "../middlewares/validationResult.middleware.js";
@@ -19,16 +20,11 @@ authRouter.post(
   registerUser
 );
 authRouter.post("/auth/login", loginValidation, loginUser);
-authRouter.post(
-  "/auth/profile",
-  authMiddleware,
-  validateResult,
-  getUserProfile
-);
+authRouter.get("/auth/profile", authMiddleware, validateResult, getUserProfile);
 authRouter.put(
   "/auth/profile",
   authMiddleware,
   validateResult,
   updateUserProfile
 );
-//authRouter.post("/auth/logout", logoutUser);
+authRouter.post("/auth/logout", authMiddleware, validateResult, logoutUser);

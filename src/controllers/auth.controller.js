@@ -116,3 +116,18 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: "Error interno al actualizar perfil" });
   }
 };
+
+export const logoutUser = (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.status(200).json({ message: "Logout exitoso" });
+  } catch (error) {
+    console.error("Error en logout:", error);
+    res.status(500).json({ message: "Error interno al cerrar sesión" });
+  }
+};
