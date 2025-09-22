@@ -31,13 +31,13 @@ const userSchema = new Schema({
     default: "user",
   },
   profile: {
-    firstName: {
+    first_name: {
       type: String,
       minlength: 2,
       maxlength: 50,
       required: true,
     },
-    lastName: {
+    last_name: {
       type: String,
       minlength: 2,
       maxlength: 50,
@@ -47,10 +47,10 @@ const userSchema = new Schema({
       type: String,
       maxlength: 500,
     },
-    avatarUrl: {
+    avatar_url: {
       type: String,
     },
-    birthDate: {
+    birth_date: {
       type: Date,
     },
   },

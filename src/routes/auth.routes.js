@@ -6,8 +6,6 @@ import { validateUserCreation } from "../middlewares/custom/user.middleware.js";
 
 export const authRouter = express.Router();
 
-authRouter.use(authMiddleware);
-
 authRouter.post(
   "/auth/register",
   validateUserCreation,
