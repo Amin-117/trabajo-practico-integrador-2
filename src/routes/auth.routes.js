@@ -20,11 +20,14 @@ authRouter.post(
   registerUser
 );
 authRouter.post("/auth/login", loginValidation, loginUser);
+
 authRouter.get("/auth/profile", authMiddleware, validateResult, getUserProfile);
+
 authRouter.put(
   "/auth/profile",
   authMiddleware,
   validateResult,
   updateUserProfile
 );
+
 authRouter.post("/auth/logout", authMiddleware, validateResult, logoutUser);

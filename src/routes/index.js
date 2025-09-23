@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { authRouter } from "./auth.routes.js";
+import { userRouter } from "./user.routes.js";
 
 export const routes = Router();
 
 routes.use(authRouter);
-// routes.use(alumnoRouter);
+routes.use(userRouter);
 // routes.use(profesorRouter);
 // routes.use(cursoRouter);

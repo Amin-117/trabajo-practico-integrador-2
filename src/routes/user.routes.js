@@ -1,9 +1,20 @@
-// import { Router } from "express";
+import { Router } from "express";
 
-// export const userRouter = Router();
+import {
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+} from "../controllers/user.controller.js";
+import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
+import { validateResult } from "../middlewares/validationResult.middleware.js";
+import { adminMiddleware } from "../middlewares/custom/admin.middleware.js";
 
-// userRouter.post("/auth/register", registerUser);
-// userRouter.post("/auth/login", loginUser);
-// userRouter.post("auth/profile", getUserProfile);
-// userRouter.post("/authprofile", updateUserProfile);
-// userRouter.post("/auth/logout", logoutUser);
+export const userRouter = Router();
+
+userRouter.use(authMiddleware);
+
+userRouter.get("/user", adminMiddleware, validateResult, getUsers);
+userRouter.get("/user/:id", adminMiddleware, validateResult, getUserById);
+userRouter.put("/user", adminMiddleware, validateResult, updateUser);
+userRouter.delete("/user", adminMiddleware, validateResult, deleteUser);

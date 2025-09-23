@@ -33,7 +33,7 @@ export const getUserById = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const { id, name, email, role } = req.body;
+  const { id, username, email, role } = req.body;
 
   try {
     if (!id) {
@@ -42,7 +42,7 @@ export const updateUser = async (req, res) => {
 
     const updatedUser = await UserModel.findOneAndUpdate(
       { _id: id, deletedAt: null },
-      { name, email, role, updatedAt: new Date() },
+      { username, email, role, updatedAt: new Date() },
       { new: true }
     ).select("-password");
 
