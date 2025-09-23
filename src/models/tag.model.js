@@ -13,7 +13,7 @@ const tagSchema = new Schema({
   description: {
     type: String,
     required: false,
-    minlength: 200,
+    maxlength: 200,
   },
   createdAt: {
     type: Date,

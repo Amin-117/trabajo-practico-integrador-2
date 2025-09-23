@@ -1,9 +1,21 @@
-// import { Router } from "express";
+import { Router } from "express";
 
-// export const tagRouter = Router();
+import {
+  createTag,
+  getTags,
+  getTagById,
+  updateTag,
+  deleteTag,
+} from "../controllers/tag.controller.js";
+import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
+import { adminMiddleware } from "../middlewares/custom/admin.middleware.js";
 
-// tagRouter.post("/auth/register", createTag);
-// tagRouter.post("/auth/login", getTags);
-// tagRouter.post("auth/profile", getTagById);
-// tagRouter.post("/authprofile", updateTag);
-// tagRouter.post("/auth/logout", deleteTag);
+export const tagRouter = Router();
+
+tagRouter.use(authMiddleware);
+
+tagRouter.post("/tags", adminMiddleware, createTag);
+tagRouter.get("/tags", getTags);
+tagRouter.get("/tags", getTagById);
+tagRouter.put("/tags", adminMiddleware, updateTag);
+tagRouter.delete("/tags", adminMiddleware, deleteTag);

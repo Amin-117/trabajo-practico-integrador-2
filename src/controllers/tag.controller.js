@@ -31,7 +31,7 @@ export const getTags = async (req, res) => {
 };
 
 export const getTagById = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.body;
 
   try {
     const tag = await TagModel.findOne({ _id: id, deletedAt: null });
