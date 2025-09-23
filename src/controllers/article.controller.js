@@ -118,3 +118,23 @@ export const deleteArticle = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getMyArticles = async (req, res) => {
+  try {
+    // gracias al middleware de auth ya tenés req.user con el id del usuario
+    const userId = req.user.id;
+
+    const articles = await ArticleModel.find({ author: userId }).populate(
+      "tags"
+    );
+
+    if (!articles.length) {
+      return res.status(404).json({ msg: "No tienes artículos creados" });
+    }
+
+    return res.json(articles);
+  } catch (error) {
+    console.error("Error al obtener mis artículos:", error);
+    return res.status(500).json({ msg: "Error del servidor" });
+  }
+};
