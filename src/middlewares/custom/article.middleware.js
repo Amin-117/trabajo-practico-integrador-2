@@ -10,7 +10,7 @@ export const validateArticleCreation = [
   body("content")
     .isString()
     .withMessage("El contenido debe ser una cadena de texto")
-    .isLength({ min: 500 })
+    .isLength({ max: 500 })
     .withMessage("El contenido debe tener al menos 500 caracteres"),
   body("tags")
     .optional()
@@ -20,8 +20,10 @@ export const validateArticleCreation = [
 
 // Validación actualización de artículo
 export const validateArticleUpdate = [
-  body("id").isMongoId().withMessage("El ID del artículo debe ser válido"),
   body("tittle").optional().isString().isLength({ min: 3, max: 200 }),
-  body("content").optional().isString().isLength({ min: 500 }),
+  body("content").optional().isString().isLength({ max: 500 }),
   body("tags").optional().isArray(),
+  body("tags.*")
+    .isMongoId()
+    .withMessage("Cada tag debe ser un ObjectId válido"),
 ];

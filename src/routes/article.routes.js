@@ -5,7 +5,8 @@ import {
   getArticles,
   getArticleById,
   updateArticle,
-  deleteArticle,
+  getMyArticles,
+  // deleteArticle,
 } from "../controllers/article.controller.js";
 import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
 import { ownerOrAdminMiddleware } from "../middlewares/custom/ownerOrAdmin.Middleware.js";
@@ -14,6 +15,7 @@ import {
   validateArticleUpdate,
 } from "../middlewares/custom/article.middleware.js";
 import { validateResult } from "../middlewares/validationResult.middleware.js";
+import { ArticleModel } from "../models/article.model.js";
 
 export const articleRouter = Router();
 
@@ -30,19 +32,14 @@ articleRouter.get("/article", getArticles);
 
 articleRouter.get("/article", getArticleById);
 
-// articleRouter.get("/article/my", getMyArticles);
+articleRouter.get("/article/my", getMyArticles);
 
 articleRouter.put(
-  "/article",
+  "/article/:id",
   ownerOrAdminMiddleware,
   validateArticleUpdate,
   validateResult,
   updateArticle
 );
 
-articleRouter.delete(
-  "/article",
-  ownerOrAdminMiddleware,
-  validateResult,
-  deleteArticle
-);
+// articleRouter.delete("/article", validateResult, deleteArticle);

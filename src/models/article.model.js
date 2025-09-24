@@ -11,7 +11,7 @@ const articleSchema = new Schema({
   content: {
     type: String,
     required: true,
-    minlength: 500,
+    maxlength: 500,
   },
   excerpt: {
     type: String,
@@ -26,7 +26,6 @@ const articleSchema = new Schema({
   Author: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   createdAt: {

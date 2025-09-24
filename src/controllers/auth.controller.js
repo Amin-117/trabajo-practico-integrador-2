@@ -61,8 +61,6 @@ export const loginUser = async (req, res) => {
       })
       .status(200)
       .json({ message: "Logueado Correctamente" });
-
-    res.status(201).json({ message: "Logueado Correctamente" });
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Internal server error" });

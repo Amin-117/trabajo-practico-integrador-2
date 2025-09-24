@@ -10,7 +10,7 @@ export const createArticle = async (req, res) => {
       content,
       excerpt,
       status,
-      Author,
+      Author: req.user._id,
       tags,
     });
 
@@ -19,6 +19,7 @@ export const createArticle = async (req, res) => {
       newArticle,
     });
   } catch (error) {
+    console.log(error);
     console.error("Error al crear artículo:", error);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -80,6 +81,7 @@ export const updateArticle = async (req, res) => {
 
     res.status(200).json(updatedArticle);
   } catch (error) {
+    console.log(error);
     console.error("Error al actualizar artículo:", error);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -121,10 +123,9 @@ export const deleteArticle = async (req, res) => {
 
 export const getMyArticles = async (req, res) => {
   try {
-    // gracias al middleware de auth ya tenés req.user con el id del usuario
     const userId = req.user.id;
 
-    const articles = await ArticleModel.find({ author: userId }).populate(
+    const articles = await ArticleModel.find({ Author: userId }).populate(
       "tags"
     );
 
