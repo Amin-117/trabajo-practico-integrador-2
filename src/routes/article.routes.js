@@ -6,7 +6,7 @@ import {
   getArticleById,
   updateArticle,
   getMyArticles,
-  // deleteArticle,
+  deleteArticle,
 } from "../controllers/article.controller.js";
 import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
 import { ownerOrAdminMiddleware } from "../middlewares/custom/ownerOrAdmin.Middleware.js";
@@ -42,4 +42,9 @@ articleRouter.put(
   updateArticle
 );
 
-// articleRouter.delete("/article", validateResult, deleteArticle);
+articleRouter.delete(
+  "/article/:id",
+  ownerOrAdminMiddleware,
+  validateResult,
+  deleteArticle
+);
