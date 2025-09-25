@@ -1,21 +1,36 @@
-// import { Router } from "express";
+import { Router } from "express";
 
-// import {
-//   createTag,
-//   getTags,
-//   getTagById,
-//   updateTag,
-//   deleteTag,
-// } from "../controllers/tag.controller.js";
-// import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
-// import { adminMiddleware } from "../middlewares/custom/admin.middleware.js";
+import {
+  createComment,
+  getCommentsByArticle,
+  getMyComments,
+  updateComments,
+  deleteComment,
+} from "../controllers/comment.controller.js";
+import { authMiddleware } from "../middlewares/custom/auth.middleware.js";
+import { ownerOrAdminMiddleware } from "../middlewares/custom/ownerOrAdmin.Middleware.js";
+import { validationResult } from "express-validator";
 
-// export const commentRouter = Router();
+export const commentRouter = Router();
 
-// commentRouter.use(authMiddleware);
+commentRouter.use(authMiddleware);
 
-// commentRouter.post("/comment", createTag);
-// commentRouter.get("/comments", getTags);
-// commentRouter.get("/comment", getTagById);
-// commentRouter.put("/comment", adminMiddleware, updateTag);
-// commentRouter.delete("/comment", adminMiddleware, deleteTag);
+commentRouter.post("/comment", createComment);
+
+commentRouter.get("/comments/article/:articleId", getCommentsByArticle);
+
+commentRouter.get("/comment/my", getMyComments);
+
+commentRouter.put(
+  "/comment/:id",
+  ownerOrAdminMiddleware,
+  validationResult,
+  updateComments
+);
+
+commentRouter.delete(
+  "/comment/:id",
+  ownerOrAdminMiddleware,
+  validationResult,
+  deleteComment
+);

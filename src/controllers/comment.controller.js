@@ -1,29 +1,41 @@
 import { CommentModel } from "../models/comment.model.js";
+import { ArticleModel } from "../models/article.model.js";
 
 export const createComment = async (req, res) => {
-  const { content, author, article } = req.body;
-
+  const { content, article } = req.body;
   try {
-    const newComment = await UserModel.create({
+    const userId = req.user.id;
+
+    const existingArticle = await ArticleModel.findById(article);
+    if (!existingArticle) {
+      return res.status(404).json({ message: "Artículo no encontrado" });
+    }
+
+    const newComment = new CommentModel({
       content,
-      author,
+      author: userId,
       article,
     });
 
-    await newUser.save();
+    await newComment.save();
 
-    res
-      .status(201)
-      .json({ message: "Comentario creado correctamente", newComment });
+    res.status(201).json({
+      message: "Comentario creado correctamente",
+      comment: newComment,
+    });
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error al crear comentario:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export const getComments = async (req, res) => {
+export const getCommentsByArticle = async (req, res) => {
+  const { articleId } = req.params;
   try {
-    const comments = await CommentModel.find({ deletedAt: null })
+    const comments = await CommentModel.findOne({
+      article: articleId,
+      deletedAt: null,
+    })
       .populate("author", "username email")
       .populate("article", "title");
 
@@ -34,26 +46,28 @@ export const getComments = async (req, res) => {
   }
 };
 
-export const getCommentsById = async (req, res) => {
+export const getMyComments = async (req, res) => {
   try {
-    const comments = await CommentModel.findById({ deletedAt: null })
+    const userId = req.user._id; // viene del middleware de autenticación
+
+    const comments = await CommentModel.find({
+      author: userId,
+      deletedAt: null,
+    })
       .populate("author", "username email")
       .populate("article", "title");
 
     res.status(200).json(comments);
   } catch (error) {
-    console.error("Error al obtener comentarios:", error);
+    console.error("Error al obtener comentarios del usuario:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const updateComments = async (req, res) => {
-  const { id, content } = req.body;
+  const { id } = req.params;
+  const { content } = req.body;
   try {
-    if (!id) {
-      return res.status(400).json({ message: "El id es obligatorio" });
-    }
-
     const updatedComment = await CommentModel.findOneAndUpdate(
       { _id: id, deletedAt: null },
       { content, updatedAt: new Date() },
@@ -74,7 +88,7 @@ export const updateComments = async (req, res) => {
 };
 
 export const deleteComment = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
     if (!id) {
       return res.status(400).json({ message: "El id es obligatorio" });

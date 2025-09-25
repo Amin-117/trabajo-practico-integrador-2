@@ -45,11 +45,12 @@ export const ownerOrAdminMiddleware = async (req, res, next) => {
   const user = req.user;
   try {
     const article = await ArticleModel.findById(req.params.id);
-    if (article.Author.toString() !== user.id && user.role !== "admin") {
+    if (article.author.toString() !== user.id && user.role !== "admin") {
       return res.status(403).json({ msg: "No autorizado" });
     }
     next();
   } catch (error) {
+    console.log(error);
     console.error(error);
     res.status(500).json({ msg: "Error interno del servidor" });
   }
