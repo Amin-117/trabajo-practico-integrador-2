@@ -15,7 +15,6 @@ import {
   validateArticleUpdate,
 } from "../middlewares/custom/article.middleware.js";
 import { validateResult } from "../middlewares/validationResult.middleware.js";
-import { ArticleModel } from "../models/article.model.js";
 
 export const articleRouter = Router();
 
@@ -30,7 +29,7 @@ articleRouter.post(
 
 articleRouter.get("/article", getArticles);
 
-articleRouter.get("/article", getArticleById);
+articleRouter.get("/article/:id", getArticleById);
 
 articleRouter.get("/article/my", getMyArticles);
 

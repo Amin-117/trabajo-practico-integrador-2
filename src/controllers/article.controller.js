@@ -1,3 +1,4 @@
+import { response } from "express";
 import { ArticleModel } from "../models/article.model.js";
 import { CommentModel } from "../models/comment.model.js";
 
@@ -47,9 +48,9 @@ export const getArticleById = async (req, res) => {
       .populate("tags", "name");
 
     if (!article) {
-      return res
-        .status(404)
-        .json({ message: "Artículo no encontrado o eliminado" });
+      return res.status(404).json({
+        message: "Artículo no encontrado o eliminado",
+      });
     }
 
     res.status(200).json(article);
@@ -59,31 +60,45 @@ export const getArticleById = async (req, res) => {
   }
 };
 
+// export const updateArticle = async (req, res) => {
+//   const { id, tittle, content, excerpt, status, tags } = req.validatedData;
+
+//   try {
+//     if (!id) {
+//       return res.status(400).json({ message: "El id es obligatorio" });
+//     }
+
+//     const updatedArticle = await ArticleModel.findOneAndUpdate(
+//       { _id: id, deletedAt: null },
+//       { tittle, content, excerpt, status, tags, updatedAt: new Date() },
+//       { new: true }
+//     );
+
+//     if (!updatedArticle) {
+//       return res
+//         .status(404)
+//         .json({ message: "amin puto Artículo no encontrado o eliminado" });
+//     }
+
+//     res.status(200).json(updatedArticle);
+//   } catch (error) {
+//     console.log(error);
+//     console.error("Error al actualizar artículo:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+
 export const updateArticle = async (req, res) => {
-  const { id, tittle, content, excerpt, status, tags } = req.body;
-
   try {
-    if (!id) {
-      return res.status(400).json({ message: "El id es obligatorio" });
-    }
-
-    const updatedArticle = await ArticleModel.findOneAndUpdate(
-      { _id: id, deletedAt: null },
-      { tittle, content, excerpt, status, tags, updatedAt: new Date() },
+    const updateArticle = await ArticleModel.findByIdAndUpdate(
+      req.params.id,
+      req.validatedData,
       { new: true }
     );
-
-    if (!updatedArticle) {
-      return res
-        .status(404)
-        .json({ message: "Artículo no encontrado o eliminado" });
-    }
-
-    res.status(200).json(updatedArticle);
+    return res.status(201).json(updateArticle);
   } catch (error) {
-    console.log(error);
-    console.error("Error al actualizar artículo:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error(error);
+    return res.status(500).json({ msg: "error interno del servidor" });
   }
 };
 
